@@ -1,10 +1,11 @@
 import React from "react";
-import { Start } from "../components";
+import { Question, Start } from "../components";
 
 const Quiz = () => {
   return (
     <section className=" flex justify-center items-center max-container ">
-      <Start />
+      {/* <Start /> */}
+      <Question />
     </section>
   );
 };
