@@ -1,14 +1,17 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { useEffect } from "react";
+import { Quiz, Head } from "./sections";
 
-function App() {
+const App = () => {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </>
+    <main className="relative">
+      <section className="padding">
+        <Head />
+      </section>
+      <section className="padding-x py-0">
+        <Quiz />
+      </section>
+    </main>
   );
-}
+};
 
 export default App;
