@@ -17,11 +17,23 @@ export const initialState: quizState = {
 export const quizSlice = createSlice({
   name: "quiz",
   initialState,
-  reducers: {},
+  reducers: {
+    nextQuestion: (state, action: PayloadAction<IAnswers[]>) => {
+      state.answers = action.payload;
+
+      state.activeQuestion = state.activeQuestion + 1;
+    },
+    previousQuestion: (state, action) => {
+      state.activeQuestion = state.activeQuestion - 1;
+    },
+    submitQuiz: (state, action: PayloadAction<IAnswers[]>) => {
+      state.answers = action.payload;
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function
-export const {} = quizSlice.actions;
+export const { nextQuestion, previousQuestion, submitQuiz } = quizSlice.actions;
 
 // export reducer
 export default quizSlice.reducer;

@@ -3,6 +3,11 @@ import quizData from "../data/quiz.json";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
 import { IQuizData } from "../../typings";
 import { Button } from ".";
+import {
+  nextQuestion,
+  previousQuestion,
+  submitQuiz,
+} from "../features/quiz/quizSlice";
 
 const Question = () => {
   const radiosWrapper = useRef(null);
@@ -34,7 +39,7 @@ const Question = () => {
   // Previous question
   const handlePrevious = () => {
     // setError("");
-    // dispatch(prevQuiz());
+    dispatch(previousQuestion());
   };
 
   // Next question
@@ -42,23 +47,21 @@ const Question = () => {
     // if (selected === "") {
     //   return setError("Please select one option!");
     // }
-    // let ans = [...answers];
-    // ans[activeQuestion] = {
-    //   q: data.question,
-    //   a: selected,
-    // };
-    // console.log("RUn once", ans);
-    // dispatch(
-    //   nextQuiz({
-    //     answers: ans,
-    //   })
-    // );
-    // setSelected("");
-    // const findCheckedInput =
-    //   radiosWrapper.current.querySelector("input:checked");
-    // if (findCheckedInput) {
-    //   findCheckedInput.checked = false;
-    // }
+    let ans = [...answers];
+    ans[activeQuestion] = {
+      q: data.question,
+      a: selected,
+    };
+    console.log("RUn once", ans);
+    dispatch(nextQuestion(ans));
+    setSelected("");
+
+    // unselect option
+    const findCheckedInput =
+      radiosWrapper.current.querySelector("input:checked");
+    if (findCheckedInput) {
+      findCheckedInput.checked = false;
+    }
   };
 
   // submit test
@@ -66,29 +69,29 @@ const Question = () => {
     // if (selected === "") {
     //   return setError("Please select one option!");
     // }
-    // dispatch(
-    //   submitQuiz({
-    //     answers: [
-    //       ...answers,
-    //       (answers[activeQuestion] = {
-    //         q: data.question,
-    //         a: selected,
-    //       }),
-    //     ],
-    //     time: time - timer,
-    //   })
-    // );
+
+    let ans = [...answers];
+    ans[activeQuestion] = {
+      q: data.question,
+      a: selected,
+    };
+    dispatch(submitQuiz(ans));
   };
 
   return (
     <div className="flex flex-col justify-start w-full max-sm:w-full rounded-md bg-[#f5f7f9] px-5 md:px-10 pt-10 pb-8 max-container">
+      {/* {JSON.stringify(answers)} */}
       <h3 className="font-montserrat text-sm md:text-base">
         Question {activeQuestion + 1}/{quizData?.data.length}
       </h3>
 
-      <h3 className="mt-2 font-palanquin text-lg md:text-3xl leading-normal font-bold mb-4 md:mb-5 ">
+      <h3 className="mt-2 font-palanquin text-lg md:text-3xl leading-normal font-bold mb-3 md:mb-4 ">
         {data?.question}
       </h3>
+
+      <p className="font-montserrat text-sm md:text-base italic mb-3 md:mb-4">
+        All questions are required
+      </p>
 
       <div
         className="mt-3 break-words font-montserrat text-base md:text-xl leading-normal text-slate-gray flex flex-col items-start justify-start "
@@ -117,8 +120,10 @@ const Question = () => {
       </div>
 
       <section
-        className={`flex  items-center w-full bottom-0 ${
-          activeQuestion <= 0 ? "justify-end" : "justify-between"
+        className={`flex-col md:flex-row md:flex items-center w-full bottom-0 mt-3 ${
+          activeQuestion <= 0
+            ? "justify-end"
+            : "justify-between space-y-4 md:space-y-0 md:space-x-5"
         } `}
       >
         {activeQuestion <= 0 ? null : (
@@ -137,7 +142,7 @@ const Question = () => {
               ? "bg-[#0c2b4f] hover:bg-[#4a5f78] text-white border-[#0c2b4f]"
               : "bg-[#ccd6e0] text-black border-[#ccd6e0] cursor-not-allowed"
           }`}
-            label="Submit"
+            label="Finish test"
             handleButtonClick={() => handleSubmit()}
           />
         ) : (

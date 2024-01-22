@@ -5,10 +5,10 @@ import { Button } from ".";
 const Start = () => {
   const handleStartTest = () => {};
   return (
-    <section className="flex flex-col items-center justify-center w-full max-sm:w-full rounded-[20px] shadow-3xl px-5 md:px-10 pt-0 pb-8 max-container ">
+    <section className="flex flex-col items-center justify-center w-full max-sm:w-full px-5 md:px-10 pt-0 pb-8 max-container">
       <img
         src={landingPageImg}
-        className=" h-auto w-[35em] "
+        className="h-auto w-[35em]"
         alt="landing page image"
       />
 
