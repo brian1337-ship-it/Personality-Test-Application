@@ -1,28 +1,18 @@
 type Props = {
   label: string;
-  backgroundColor?: string;
-  textColor?: string;
-  borderColor?: string;
-  fullWidth?: boolean;
+  style?: string;
   handleButtonClick: () => void;
 };
 
-const Button = ({
-  label,
-  backgroundColor,
-  textColor,
-  borderColor,
-  fullWidth,
-  handleButtonClick,
-}: Props) => {
+const Button = ({ label, style, handleButtonClick }: Props) => {
   return (
     <button
-      className={`flex justify-center items-center gap-2 px-7 py-4 border font-montserrat text-lg leading-none
+      className={`flex justify-center items-center gap-2 px-7 py-4 md:py-6 border font-montserrat text-lg md:text-xl leading-none
       ${
-        backgroundColor
-          ? `${backgroundColor} ${textColor} ${borderColor}`
+        style
+          ? `${style}`
           : "bg-[#0c2b4f] hover:bg-[#4a5f78] text-white border-[#0c2b4f]"
-      } rounded-full ${fullWidth && "w-full"}`}
+      } rounded-md w-full`}
       onClick={() => handleButtonClick()}
     >
       {label}

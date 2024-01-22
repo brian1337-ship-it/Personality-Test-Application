@@ -1,0 +1,67 @@
+{
+  "data": [
+    {
+      "question": "During dinner parties at your home, you have a hard time with people who:",
+      "choices": [
+        {
+          "option": "A. Ask you to tell a story in front of everyone else",
+          "personality": "introvert"
+        },
+        {
+          "option": "B. Talk privately between themselves",
+          "personality": "extrovert"
+        },
+        {
+          "option": "C. Hang around you all evening",
+          "personality": "introvert"
+        },
+        {
+          "option": "D. Always drag the conversation back to themselves",
+          "personality": "extrovert"
+        }
+      ]
+    },
+    {
+      "question": "You’re having an animated discussion with a colleague regarding a project that you’re in charge of. You:",
+      "choices": [
+        {
+          "option": "A. Don’t dare contradict them",
+          "personality": "introvert"
+        },
+        {
+          "option": "B. Think that they are obviously right",
+          "personality": "introvert"
+        },
+        {
+          "option": "C. Defend your own point of view, tooth and nail",
+          "personality": "extrovert"
+        },
+        {
+          "option": "D. Continuously interrupt your colleague",
+          "personality": "extrovert"
+        }
+      ]
+    },
+    {
+      "question": "You are taking part in a guided tour of a museum. You:",
+      "choices": [
+        {
+          "option": "A. Are a bit too far towards the back so don’t really hear what the guide is saying",
+          "personality": "introvert"
+        },
+        {
+          "option": "B. Follow the group without question",
+          "personality": "introvert"
+        },
+        {
+          "option": "C. Make sure that everyone is able to hear properly",
+          "personality": "extrovert"
+        },
+        {
+          "option": "D. Are right up the front, adding your own comments in a loud voice",
+          "personality": "extrovert"
+        }
+      ]
+    }
+  ]
+}
