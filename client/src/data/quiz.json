@@ -1,22 +1,22 @@
 {
   "data": [
     {
-      "question": "During dinner parties at your home, you have a hard time with people who:",
+      "question": "This morning, your agenda seems to be free. You:",
       "choices": [
         {
-          "option": "A. Ask you to tell a story in front of everyone else",
+          "option": "A. Know that somebody will find a reason to come and bother you",
           "personality": "introvert"
         },
         {
-          "option": "B. Talk privately between themselves",
+          "option": "B. Heave a sigh of relief and look forward to a day without stress",
+          "personality": "introvert"
+        },
+        {
+          "option": "C. Question your colleagues about a project that’s been worrying you",
           "personality": "extrovert"
         },
         {
-          "option": "C. Hang around you all evening",
-          "personality": "introvert"
-        },
-        {
-          "option": "D. Always drag the conversation back to themselves",
+          "option": "D. Pick up the phone and start filling up your agenda with meetings",
           "personality": "extrovert"
         }
       ]

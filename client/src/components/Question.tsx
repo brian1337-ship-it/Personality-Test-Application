@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 import quizData from "../data/quiz.json";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
-import { IQuizData } from "../../typings";
+import { IAnswers, IQuizData } from "../../typings";
 import { Button } from ".";
 import {
   nextQuestion,
@@ -10,14 +10,14 @@ import {
 } from "../features/quiz/quizSlice";
 
 const Question = () => {
-  const radiosWrapper = useRef(null);
+  const radiosWrapper = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
 
   const { activeQuestion, answers } = useAppSelector((state) => state?.quiz);
   // the current question
   const [data, setData] = useState<IQuizData>(quizData?.data[activeQuestion]);
   const [error, setError] = useState("");
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<IAnswers | null>(null);
 
   useEffect(() => {
     // initialize data
@@ -25,12 +25,23 @@ const Question = () => {
 
     // to show selected answers when PREVIUOS is selected
     if (answers[activeQuestion] != undefined) {
-      setSelected(answers[activeQuestion].a);
+      setSelected({
+        ...selected,
+        ["answer"]: answers[activeQuestion].answer,
+        ["personality"]: answers[activeQuestion].personality,
+      });
     }
   }, [data, activeQuestion]);
 
-  const changeOptionHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelected(e.target.value);
+  const changeOptionHandler = (
+    e: ChangeEvent<HTMLInputElement>,
+    personality: string
+  ) => {
+    setSelected({
+      ...selected,
+      ["answer"]: e.target.value,
+      ["personality"]: personality,
+    });
     if (error) {
       setError("");
     }
@@ -49,16 +60,17 @@ const Question = () => {
     // }
     let ans = [...answers];
     ans[activeQuestion] = {
-      q: data.question,
-      a: selected,
+      question: data.question,
+      answer: selected.answer,
+      personality: selected.personality,
     };
-    console.log("RUn once", ans);
+    // console.log("RUn once", ans);
     dispatch(nextQuestion(ans));
-    setSelected("");
+    setSelected(null);
 
     // unselect option
     const findCheckedInput =
-      radiosWrapper.current.querySelector("input:checked");
+      radiosWrapper.current?.querySelector("input:checked");
     if (findCheckedInput) {
       findCheckedInput.checked = false;
     }
@@ -72,8 +84,9 @@ const Question = () => {
 
     let ans = [...answers];
     ans[activeQuestion] = {
-      q: data.question,
-      a: selected,
+      question: data.question,
+      answer: selected.answer,
+      personality: selected.personality,
     };
     dispatch(submitQuiz(ans));
   };
@@ -100,7 +113,7 @@ const Question = () => {
         {data?.choices.map((choice, i) => (
           <label
             className={`${
-              choice.option === selected
+              choice.option === selected?.answer
                 ? " border-black font-bold "
                 : " border-slate-400 font-normal "
             } rounded-md bg-white cursor-pointer mb-4 md:mb-8 p-3 md:p-5 border`}
@@ -111,7 +124,7 @@ const Question = () => {
               name="answer"
               className=" fixed opacity-0 pointer-events-none "
               value={choice.option}
-              onChange={changeOptionHandler}
+              onChange={(e) => changeOptionHandler(e, choice.personality)}
               checked={choice.option === selected}
             />
             {choice.option}

@@ -9,6 +9,7 @@ export interface IQuizData {
 }
 
 export interface IAnswers {
-  q: string;
-  a: string;
+  question?: string;
+  answer: string;
+  personality: string;
 }

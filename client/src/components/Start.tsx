@@ -1,9 +1,15 @@
 import React from "react";
 import landingPageImg from "/landingpage.jpg";
 import { Button } from ".";
+import { useAppDispatch } from "../customHooks/reduxHooks";
+import { startQuiz } from "../features/quiz/quizSlice";
 
 const Start = () => {
-  const handleStartTest = () => {};
+  const dispatch = useAppDispatch();
+
+  const handleStartTest = () => {
+    dispatch(startQuiz());
+  };
   return (
     <section className="flex flex-col items-center justify-center w-full max-sm:w-full px-5 md:px-10 pt-0 pb-8 max-container">
       <img
