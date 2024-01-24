@@ -99,12 +99,11 @@ const Question = () => {
 
   return (
     <div className="flex flex-col justify-start w-full max-sm:w-full rounded-md bg-[#f5f7f9] px-5 md:px-10 pt-10 pb-8 max-container">
-      {/* {JSON.stringify(answers)} */}
       <h3 className="font-montserrat text-sm md:text-base">
         Question {activeQuestion + 1}/{quizData?.data.length}
       </h3>
 
-      <h3 className="mt-2 font-palanquin text-lg md:text-3xl leading-normal font-bold mb-3 md:mb-4 ">
+      <h3 className="mt-2 font-palanquin text-lg md:text-2xl leading-normal font-bold mb-3 md:mb-4 ">
         {data?.question}
       </h3>
 
