@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 import quizData from "../data/quiz.json";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
 import { IAnswers, IQuizData } from "../../typings";
+import { toast } from "react-toastify";
 import { Button } from ".";
 import {
   nextQuestion,
@@ -16,7 +17,6 @@ const Question = () => {
   const { activeQuestion, answers } = useAppSelector((state) => state?.quiz);
   // the current question
   const [data, setData] = useState<IQuizData>(quizData?.data[activeQuestion]);
-  const [error, setError] = useState("");
   const [selected, setSelected] = useState<IAnswers | null>(null);
 
   useEffect(() => {
@@ -33,6 +33,13 @@ const Question = () => {
     }
   }, [data, activeQuestion]);
 
+  useEffect(() => {
+    return () => {
+      toast.dismiss();
+    };
+  }, []);
+
+  // select answer
   const changeOptionHandler = (
     e: ChangeEvent<HTMLInputElement>,
     personality: string
@@ -42,9 +49,6 @@ const Question = () => {
       ["answer"]: e.target.value,
       ["personality"]: personality,
     });
-    if (error) {
-      setError("");
-    }
   };
 
   // Previous question
@@ -55,9 +59,10 @@ const Question = () => {
 
   // Next question
   const handleNext = () => {
-    // if (selected === "") {
-    //   return setError("Please select one option!");
-    // }
+    // validation
+    if (selected === null) {
+      return toast.error("Please select one option!");
+    }
     let ans = [...answers];
     ans[activeQuestion] = {
       question: data.question,
@@ -78,9 +83,10 @@ const Question = () => {
 
   // submit test
   const handleSubmit = () => {
-    // if (selected === "") {
-    //   return setError("Please select one option!");
-    // }
+    // validation
+    if (selected === null) {
+      return toast.error("Please select one option!");
+    }
 
     let ans = [...answers];
     ans[activeQuestion] = {
@@ -153,7 +159,7 @@ const Question = () => {
           ${
             selected
               ? "bg-[#0c2b4f] hover:bg-[#4a5f78] text-white border-[#0c2b4f]"
-              : "bg-[#ccd6e0] text-black border-[#ccd6e0] cursor-not-allowed"
+              : "bg-[#ccd6e0] text-white border-[#ccd6e0] cursor-not-allowed"
           }`}
             label="Finish test"
             handleButtonClick={() => handleSubmit()}
