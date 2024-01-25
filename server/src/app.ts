@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { CORS_ORIGIN } from "./constants";
+import quizRoute from "./modules/quiz/quiz.route";
 
 const app = express();
 
