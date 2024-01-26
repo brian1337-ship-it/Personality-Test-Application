@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { RequestTaskBody, RequestTaskParams } from "./quiz.schema";
+import { RequestQuizBody, RequestQuizParams } from "./quiz.schema";
+import { saveAnswer, findAllAnswers, updateAnswer } from "./quiz.service";
 
+// @desc    Find all quiz data
+// @route   GET /api/quiz
+// @access  Public
 export async function findAllHandler(_: Request, res: Response) {
   return res.status(StatusCodes.OK).json([
     {
@@ -75,4 +79,54 @@ export async function findAllHandler(_: Request, res: Response) {
       ],
     },
   ]);
+}
+
+// @desc    Find all answers
+// @route   POST /api/answers
+// @access  Public
+export async function findAllAnswersHandler(_: Request, res: Response) {
+  const answers = await findAllAnswers();
+
+  return res.status(StatusCodes.OK).send(answers);
+}
+
+// @desc    Save answer
+// @route   POST /api/quiz
+// @access  Public
+export async function saveAnswerHandler(
+  req: Request<{}, {}, RequestQuizBody>,
+  res: Response
+) {
+  const { question, answer, personality } = req.body;
+
+  try {
+    // call the service
+    const ans = await saveAnswer({ question, answer, personality });
+
+    return res.status(StatusCodes.CREATED).send(ans);
+  } catch (e: any) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message);
+  }
+}
+
+// @desc    Update quiz answer
+// @route   PATCH /api/quiz/:answerId
+// @access  Public
+export async function updateAnswerHandler(
+  req: Request<RequestQuizParams, {}, RequestQuizBody>,
+  res: Response
+) {
+  const { answerId } = req.params;
+
+  try {
+    const ans = await updateAnswer(answerId, req.body);
+
+    if (!ans) {
+      return res.status(StatusCodes.NOT_FOUND).send("Answer not found");
+    }
+
+    return res.status(StatusCodes.OK).send(ans);
+  } catch (e: any) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message);
+  }
 }
