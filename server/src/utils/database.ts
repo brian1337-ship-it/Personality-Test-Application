@@ -2,14 +2,17 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import logger from "./logger";
 
-// connect to Mongo
+// mongo server instance
+let mongoServer: any;
+
+// connect
 export async function connectToDatabase() {
   try {
     // start mongo server
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
 
-    // connect
+    // connect to db
     await mongoose.connect(mongoUri, { dbName: "testingDb" });
     logger.info("Connected to database");
   } catch (e) {
@@ -18,9 +21,13 @@ export async function connectToDatabase() {
   }
 }
 
-//  disconnect from Mongo
+//  disconnect
 export async function disconnectFromDatabase() {
-  await mongoose.connection.close();
+  // close db connection
+  // await mongoose.disconnect();
+
+  // stop mongo server
+  await mongoServer.stop();
 
   logger.info("Disconnected from database");
 

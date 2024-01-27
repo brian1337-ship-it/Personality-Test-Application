@@ -7,9 +7,14 @@ dotenv.config();
 const PORT = process.env.PORT || 4000;
 
 // the server instance
-const server = app.listen(PORT, async () => {
-  await connectToDatabase();
-  logger.info(`Server listening  on port ${PORT}`);
+let server: any;
+
+// connect to the database
+connectToDatabase().then(() => {
+  // run the server
+  server = app.listen(PORT, async () => {
+    logger.info(`Server listening on port ${PORT}`);
+  });
 });
 
 // signals to listen to for termination
@@ -18,14 +23,24 @@ const signals = ["SIGTERM", "SIGINT"];
 const gracefulShutdown = (signal: string) => {
   process.on(signal, async () => {
     logger.info("Got signal", signal);
-    server.close();
 
     // disconnect from the db
-    await disconnectFromDatabase();
+    // await disconnectFromDatabase();
 
-    logger.info("Shutting down...");
+    // stop server
+    // server.close();
 
-    process.exit(0);
+    // logger.info("Shutting down...");
+
+    // process.exit(0);
+
+    // disconnect from the db
+    disconnectFromDatabase().then(() => {
+      server.close();
+      logger.info("Shutting down...");
+
+      process.exit(0);
+    });
   });
 };
 
