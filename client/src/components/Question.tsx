@@ -1,5 +1,9 @@
+import {
+  useGetQuizDataQuery,
+  useSubmitAnswersMutation,
+} from "../features/api/quizApiSlice";
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
-import quizData from "../data/quiz.json";
+// import quizData from "../data/quiz.json";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
 import { IAnswers, IQuizData } from "../../typings";
 import { toast } from "react-toastify";
@@ -14,16 +18,29 @@ const Question = () => {
   const radiosWrapper = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
 
+  const {
+    data: quizData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetQuizDataQuery();
+  const [submitAnswers] = useSubmitAnswersMutation();
+
   const { activeQuestion, answers } = useAppSelector((state) => state?.quiz);
   // the current question
-  const [data, setData] = useState<IQuizData>(quizData?.data[activeQuestion]);
+  const [data, setData] = useState<IQuizData | null>(null);
   const [selected, setSelected] = useState<IAnswers | null>(null);
 
   useEffect(() => {
     // initialize data
-    setData(quizData?.data[activeQuestion]);
-
+    // setData(quizData[activeQuestion]);
     // to show selected answers when PREVIUOS is selected
+    if (isSuccess) {
+      // initialize data
+      setData(quizData[activeQuestion]);
+      console.log("The later data:", quizData);
+    }
     if (answers[activeQuestion] != undefined) {
       setSelected({
         ...selected,
@@ -31,13 +48,23 @@ const Question = () => {
         ["personality"]: answers[activeQuestion].personality,
       });
     }
-  }, [data, activeQuestion]);
+  }, [activeQuestion]);
 
   useEffect(() => {
+    if (isLoading) {
+      toast.loading("Loading...");
+    } else if (isSuccess) {
+      // initialize data
+      setData(quizData[activeQuestion]);
+      console.log("The data:", quizData);
+    } else if (isError) {
+      toast.error(error);
+    }
+
     return () => {
       toast.dismiss();
     };
-  }, []);
+  }, [isLoading, isSuccess, isError, error, quizData]);
 
   // select answer
   const changeOptionHandler = (
@@ -69,7 +96,8 @@ const Question = () => {
       answer: selected.answer,
       personality: selected.personality,
     };
-    // console.log("RUn once", ans);
+    console.log("Active Question", activeQuestion);
+    console.log("RUn once", ans);
     dispatch(nextQuestion(ans));
     setSelected(null);
 
@@ -94,13 +122,19 @@ const Question = () => {
       answer: selected.answer,
       personality: selected.personality,
     };
-    dispatch(submitQuiz(ans));
+
+    // api call
+    submitAnswers(ans);
+
+    // navigate to final page
+    dispatch(submitQuiz());
   };
 
   return (
     <div className="flex flex-col justify-start w-full max-sm:w-full rounded-md bg-[#f5f7f9] px-5 md:px-10 pt-10 pb-8 max-container">
+      {JSON.stringify(quizData)}
       <h3 className="font-montserrat text-sm md:text-base">
-        Question {activeQuestion + 1}/{quizData?.data.length}
+        Question {activeQuestion + 1}/{quizData?.length}
       </h3>
 
       <h3 className="mt-2 font-palanquin text-lg md:text-2xl leading-normal font-bold mb-3 md:mb-4 ">
@@ -152,7 +186,7 @@ const Question = () => {
           />
         )}
 
-        {activeQuestion + 1 >= quizData?.data.length ? (
+        {activeQuestion + 1 >= quizData?.length ? (
           <Button
             style={`
           ${

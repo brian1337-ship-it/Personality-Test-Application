@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 // Slice reducers
 import quizReducer from "../features/quiz/quizSlice";
-// import { apiSlice } from "../features/quiz/apiSlice";
+import { apiSlice } from "../features/api/apiSlice";
 
 export const store = configureStore({
   reducer: {
     quiz: quizReducer,
-    // [apiSlice.reducerPath]: apiSlice.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
-  //   middleware: (getDefaultMiddleware) =>
-  //     getDefaultMiddleware().concat(apiSlice.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true,
 });
 

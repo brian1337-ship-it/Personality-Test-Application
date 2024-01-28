@@ -6,12 +6,14 @@ type quizState = {
   step: number;
   activeQuestion: number;
   answers: IAnswers[];
+  quizData: IQuizData[];
 };
 
 export const initialState: quizState = {
   step: 1,
   activeQuestion: 0,
   answers: [],
+  quizData: [],
 };
 
 export const quizSlice = createSlice({
@@ -21,6 +23,9 @@ export const quizSlice = createSlice({
     startQuiz: (state) => {
       state.step = 2;
     },
+    updateQuizData: (state, action: PayloadAction<IQuizData[]>) => {
+      state.quizData = action.payload;
+    },
     nextQuestion: (state, action: PayloadAction<IAnswers[]>) => {
       state.answers = action.payload;
 
@@ -29,8 +34,8 @@ export const quizSlice = createSlice({
     previousQuestion: (state) => {
       state.activeQuestion = state.activeQuestion - 1;
     },
-    submitQuiz: (state, action: PayloadAction<IAnswers[]>) => {
-      state.answers = action.payload;
+    submitQuiz: (state) => {
+      // state.answers = action.payload;
       state.step = 3;
     },
     retakeQuiz: (state) => {
@@ -48,6 +53,7 @@ export const {
   submitQuiz,
   startQuiz,
   retakeQuiz,
+  updateQuizData,
 } = quizSlice.actions;
 
 // export reducer

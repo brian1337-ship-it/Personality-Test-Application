@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
-import quizData from "../data/quiz.json";
+import { useAppDispatch } from "../customHooks/reduxHooks";
 import { retakeQuiz } from "../features/quiz/quizSlice";
 import { Button } from ".";
+import {
+  useDeleteAllAnswersMutation,
+  useGetAllAnswersQuery,
+} from "../features/api/quizApiSlice";
+import { toast } from "react-toastify";
 
 type PersonalityPoints = {
   introvert: number;
@@ -10,7 +14,16 @@ type PersonalityPoints = {
 };
 const End = () => {
   const dispatch = useAppDispatch();
-  const { answers } = useAppSelector((state) => state.quiz);
+  const {
+    data: answers,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetAllAnswersQuery();
+
+  const [deleteAllAnswers] = useDeleteAllAnswersMutation();
+
   const [points, setPoints] = useState<PersonalityPoints>({
     introvert: 0,
     extrovert: 0,
@@ -18,28 +31,38 @@ const End = () => {
   const [showAns, setShowAns] = useState<boolean>(false);
 
   useEffect(() => {
-    let introvertPoints = 0;
-    let extrovertPoints = 0;
+    if (isLoading) {
+      toast.loading("Loading...");
+    } else if (isSuccess) {
+      let introvertPoints = 0;
+      let extrovertPoints = 0;
 
-    // check answers for personality type
-    answers.forEach((result, index) => {
-      if (result.personality === "introvert") {
-        introvertPoints++;
-      } else {
-        extrovertPoints++;
-      }
-    });
+      // check answers for personality type
+      answers.forEach((result, index) => {
+        if (result.personality === "introvert") {
+          introvertPoints++;
+        } else {
+          extrovertPoints++;
+        }
+      });
 
-    // save personality types to state
-    setPoints({
-      ...points,
-      ["introvert"]: introvertPoints,
-      ["extrovert"]: extrovertPoints,
-    });
-  }, []);
+      // save personality types to state
+      setPoints({
+        ...points,
+        ["introvert"]: introvertPoints,
+        ["extrovert"]: extrovertPoints,
+      });
+    } else if (isError) {
+      toast.error(error);
+    }
+  }, [isLoading, isSuccess, isError, error]);
 
   // retake quiz
   const handleRetake = () => {
+    // api call
+    deleteAllAnswers();
+
+    // reset
     dispatch(retakeQuiz());
   };
 
