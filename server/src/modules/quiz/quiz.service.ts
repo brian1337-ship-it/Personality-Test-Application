@@ -6,10 +6,10 @@ export async function findAllAnswers() {
   return QuizModel.find({});
 }
 
-export async function saveAnswer(answer: Quiz) {
+export async function saveAnswers(answer: Quiz[]) {
   return QuizModel.create(answer);
 }
 
-export async function updateAnswer(_id: string, body: Quiz) {
-  return QuizModel.findByIdAndUpdate(_id, body, { new: true });
+export async function deleteAnswers() {
+  return QuizModel.deleteMany({});
 }

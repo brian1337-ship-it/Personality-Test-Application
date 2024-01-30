@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { RequestQuizBody, RequestQuizParams } from "./quiz.schema";
-import { saveAnswer, findAllAnswers, updateAnswer } from "./quiz.service";
+import { SaveAnswersBody } from "./quiz.schema";
+import { saveAnswers, findAllAnswers, deleteAnswers } from "./quiz.service";
 
 // @desc    Find all quiz data
 // @route   GET /api/quiz
@@ -82,7 +82,7 @@ export async function findAllHandler(_: Request, res: Response) {
 }
 
 // @desc    Find all answers
-// @route   POST /api/answers
+// @route   GET /api/quiz/answers
 // @access  Public
 export async function findAllAnswersHandler(_: Request, res: Response) {
   const answers = await findAllAnswers();
@@ -90,18 +90,16 @@ export async function findAllAnswersHandler(_: Request, res: Response) {
   return res.status(StatusCodes.OK).send(answers);
 }
 
-// @desc    Save answer
-// @route   POST /api/quiz
+// @desc    Save answers
+// @route   POST /api/quiz/answers
 // @access  Public
-export async function saveAnswerHandler(
-  req: Request<{}, {}, RequestQuizBody>,
+export async function saveAnswersHandler(
+  req: Request<{}, {}, SaveAnswersBody>,
   res: Response
 ) {
-  const { question, answer, personality } = req.body;
-
   try {
     // call the service
-    const ans = await saveAnswer({ question, answer, personality });
+    const ans = await saveAnswers(req.body);
 
     return res.status(StatusCodes.CREATED).send(ans);
   } catch (e: any) {
@@ -109,22 +107,14 @@ export async function saveAnswerHandler(
   }
 }
 
-// @desc    Update quiz answer
-// @route   PATCH /api/quiz/:answerId
+// @desc    Delete quiz answers
+// @route   DELETE /api/quiz/answers
 // @access  Public
-export async function updateAnswerHandler(
-  req: Request<RequestQuizParams, {}, RequestQuizBody>,
-  res: Response
-) {
-  const { answerId } = req.params;
-
+export async function deleteAnswersHandler(_: Request, res: Response) {
   try {
-    const ans = await updateAnswer(answerId, req.body);
+    const ans = await deleteAnswers();
 
-    if (!ans) {
-      return res.status(StatusCodes.NOT_FOUND).send("Answer not found");
-    }
-
+    // return res.status(StatusCodes.NO_CONTENT);
     return res.status(StatusCodes.OK).send(ans);
   } catch (e: any) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message);

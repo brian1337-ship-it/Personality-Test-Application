@@ -1,21 +1,19 @@
-import { object, string, TypeOf } from "zod";
+import { object, string, TypeOf, array } from "zod";
 
-export const quizSchema = {
-  body: object({
-    question: string({
-      required_error: "Question is required",
-    }),
-    answer: string({
-      required_error: "Selected answer is required",
-    }),
-    personality: string({
-      required_error: "Personality description is required",
-    }),
-  }),
-  params: object({
-    answerId: string(),
-  }),
+export const saveAnswersSchema = {
+  body: array(
+    object({
+      question: string({
+        required_error: "Question is required",
+      }),
+      answer: string({
+        required_error: "Selected answer is required",
+      }),
+      personality: string({
+        required_error: "Personality description is required",
+      }),
+    })
+  ),
 };
 
-export type RequestQuizBody = TypeOf<typeof quizSchema.body>;
-export type RequestQuizParams = TypeOf<typeof quizSchema.params>;
+export type SaveAnswersBody = TypeOf<typeof saveAnswersSchema.body>;

@@ -3,10 +3,10 @@ import { processRequestBody } from "zod-express-middleware";
 import {
   findAllHandler,
   findAllAnswersHandler,
-  saveAnswerHandler,
-  updateAnswerHandler,
+  saveAnswersHandler,
+  deleteAnswersHandler,
 } from "./quiz.controller";
-import { quizSchema } from "./quiz.schema";
+import { saveAnswersSchema } from "./quiz.schema";
 
 const router = express.Router();
 
@@ -16,14 +16,14 @@ router.get("/", findAllHandler);
 // Find all answers
 router.get("/answers", findAllAnswersHandler);
 
-// Save Answer
-router.post("/", processRequestBody(quizSchema.body), saveAnswerHandler);
+// Save Answers
+router.post(
+  "/answers",
+  processRequestBody(saveAnswersSchema.body),
+  saveAnswersHandler
+);
 
 // Update Answer
-router.patch(
-  "/:answerId",
-  processRequestBody(quizSchema.body),
-  updateAnswerHandler
-);
+router.delete("/answers", deleteAnswersHandler);
 
 export default router;
