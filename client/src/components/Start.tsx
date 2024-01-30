@@ -1,15 +1,22 @@
-import React from "react";
+import { useDeleteAllAnswersMutation } from "../features/api/apiSlice";
 import landingPageImg from "/landingpage.jpg";
 import { Button } from ".";
 import { useAppDispatch } from "../customHooks/reduxHooks";
 import { startQuiz } from "../features/quiz/quizSlice";
+import { toast } from "react-toastify";
 
 const Start = () => {
   const dispatch = useAppDispatch();
 
+  const [deleteAllAnswers] = useDeleteAllAnswersMutation();
+
   const handleStartTest = () => {
-    dispatch(startQuiz());
+    deleteAllAnswers()
+      .unwrap()
+      .then(() => dispatch(startQuiz()))
+      .catch((error) => toast.error(error));
   };
+
   return (
     <section className="flex flex-col items-center justify-center w-full max-sm:w-full px-5 md:px-10 pt-0 pb-8 max-container">
       <img

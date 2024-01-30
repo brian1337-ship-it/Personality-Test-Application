@@ -1,7 +1,7 @@
 import {
   useGetQuizDataQuery,
   useSubmitAnswersMutation,
-} from "../features/api/quizApiSlice";
+} from "../features/api/apiSlice";
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 // import quizData from "../data/quiz.json";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
@@ -28,19 +28,30 @@ const Question = () => {
   const [submitAnswers] = useSubmitAnswersMutation();
 
   const { activeQuestion, answers } = useAppSelector((state) => state?.quiz);
-  // the current question
+  // the current question data
   const [data, setData] = useState<IQuizData | null>(null);
   const [selected, setSelected] = useState<IAnswers | null>(null);
 
+  // useEffect(() => {
+  // initialize data
+  // setData(quizData[activeQuestion]);
+  // to show selected answers when PREVIUOS is selected
+  // if (isSuccess) {
+  //   // initialize data
+  //   setData(quizData[activeQuestion]);
+  //   console.log("The later data:", quizData);
+  // }
+  // if (answers[activeQuestion] != undefined) {
+  //   setSelected({
+  //     ...selected,
+  //     ["answer"]: answers[activeQuestion].answer,
+  //     ["personality"]: answers[activeQuestion].personality,
+  //   });
+  // }
+  // }, [activeQuestion]);
+
   useEffect(() => {
-    // initialize data
-    // setData(quizData[activeQuestion]);
-    // to show selected answers when PREVIUOS is selected
-    if (isSuccess) {
-      // initialize data
-      setData(quizData[activeQuestion]);
-      console.log("The later data:", quizData);
-    }
+    // show selected answers when PREVIOUS is selected
     if (answers[activeQuestion] != undefined) {
       setSelected({
         ...selected,
@@ -48,15 +59,14 @@ const Question = () => {
         ["personality"]: answers[activeQuestion].personality,
       });
     }
-  }, [activeQuestion]);
 
-  useEffect(() => {
     if (isLoading) {
       toast.loading("Loading...");
     } else if (isSuccess) {
       // initialize data
       setData(quizData[activeQuestion]);
-      console.log("The data:", quizData);
+      // deleteAllAnswers();
+      // console.log("The data:", quizData);
     } else if (isError) {
       toast.error(error);
     }
@@ -64,7 +74,16 @@ const Question = () => {
     return () => {
       toast.dismiss();
     };
-  }, [isLoading, isSuccess, isError, error, quizData]);
+  }, [
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    quizData,
+    activeQuestion,
+    answers,
+    selected,
+  ]);
 
   // select answer
   const changeOptionHandler = (
@@ -90,14 +109,16 @@ const Question = () => {
     if (selected === null) {
       return toast.error("Please select one option!");
     }
+
+    // add answer
     let ans = [...answers];
     ans[activeQuestion] = {
       question: data.question,
       answer: selected.answer,
       personality: selected.personality,
     };
-    console.log("Active Question", activeQuestion);
-    console.log("RUn once", ans);
+    // console.log("Active Question", activeQuestion);
+    // console.log("RUn once", ans);
     dispatch(nextQuestion(ans));
     setSelected(null);
 
@@ -116,23 +137,23 @@ const Question = () => {
       return toast.error("Please select one option!");
     }
 
+    // add last answer
     let ans = [...answers];
     ans[activeQuestion] = {
-      question: data.question,
+      question: data?.question,
       answer: selected.answer,
       personality: selected.personality,
     };
 
     // api call
-    submitAnswers(ans);
-
-    // navigate to final page
-    dispatch(submitQuiz());
+    submitAnswers(ans)
+      .unwrap()
+      .then(() => dispatch(submitQuiz()))
+      .catch((error) => toast.error(error));
   };
 
   return (
     <div className="flex flex-col justify-start w-full max-sm:w-full rounded-md bg-[#f5f7f9] px-5 md:px-10 pt-10 pb-8 max-container">
-      {JSON.stringify(quizData)}
       <h3 className="font-montserrat text-sm md:text-base">
         Question {activeQuestion + 1}/{quizData?.length}
       </h3>

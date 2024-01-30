@@ -36,6 +36,7 @@ export const quizSlice = createSlice({
     },
     submitQuiz: (state) => {
       // state.answers = action.payload;
+
       state.step = 3;
     },
     retakeQuiz: (state) => {

@@ -1,11 +1,8 @@
+import { useGetAllAnswersQuery } from "../features/api/apiSlice";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../customHooks/reduxHooks";
 import { retakeQuiz } from "../features/quiz/quizSlice";
 import { Button } from ".";
-import {
-  useDeleteAllAnswersMutation,
-  useGetAllAnswersQuery,
-} from "../features/api/quizApiSlice";
 import { toast } from "react-toastify";
 
 type PersonalityPoints = {
@@ -14,15 +11,15 @@ type PersonalityPoints = {
 };
 const End = () => {
   const dispatch = useAppDispatch();
+
   const {
     data: answers,
+    refetch,
     isLoading,
     isSuccess,
     isError,
     error,
   } = useGetAllAnswersQuery();
-
-  const [deleteAllAnswers] = useDeleteAllAnswersMutation();
 
   const [points, setPoints] = useState<PersonalityPoints>({
     introvert: 0,
@@ -37,39 +34,43 @@ const End = () => {
       let introvertPoints = 0;
       let extrovertPoints = 0;
 
-      // check answers for personality type
-      answers.forEach((result, index) => {
-        if (result.personality === "introvert") {
-          introvertPoints++;
-        } else {
-          extrovertPoints++;
-        }
-      });
+      // check if should refetch the data
+      if (answers != null && answers.length > 0) {
+        // check answers for personality type
+        answers.forEach((result, index) => {
+          if (result.personality === "introvert") {
+            introvertPoints++;
+          } else {
+            extrovertPoints++;
+          }
+        });
 
-      // save personality types to state
-      setPoints({
-        ...points,
-        ["introvert"]: introvertPoints,
-        ["extrovert"]: extrovertPoints,
-      });
+        // save personality types to state
+        setPoints({
+          ...points,
+          ["introvert"]: introvertPoints,
+          ["extrovert"]: extrovertPoints,
+        });
+      } else {
+        refetch();
+      }
     } else if (isError) {
       toast.error(error);
     }
-  }, [isLoading, isSuccess, isError, error]);
+
+    return () => {
+      toast.dismiss();
+    };
+  }, [isLoading, isSuccess, isError, error, answers]);
 
   // retake quiz
   const handleRetake = () => {
-    // api call
-    deleteAllAnswers();
-
-    // reset
+    // resets store
     dispatch(retakeQuiz());
   };
 
   return (
     <div className="flex flex-col justify-center items-center w-full max-sm:w-full rounded-md bg-[#f5f7f9] px-5 md:px-10 pt-10 pb-8 max-container mb-20">
-      {/* {JSON.stringify(points)} */}
-
       {points.introvert > points.extrovert ? (
         <section className="flex flex-col justify-center items-center w-full">
           <h3 className="font-montserrat text-lg md:text-2xl font-semibold italic ">
