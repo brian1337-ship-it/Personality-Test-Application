@@ -3,7 +3,6 @@ import {
   useSubmitAnswersMutation,
 } from "../features/api/quizApiSlice";
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
-// import quizData from "../data/quiz.json";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
 import { IAnswers, IQuizData } from "../../typings";
 import { toast } from "react-toastify";
@@ -93,7 +92,7 @@ const Question = () => {
 
     setSelected(null);
 
-    // unselect option
+    // unselect answer
     const findCheckedInput =
       radiosWrapper.current?.querySelector("input:checked");
     if (findCheckedInput) {

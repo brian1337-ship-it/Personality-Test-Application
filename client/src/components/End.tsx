@@ -5,55 +5,17 @@ import { retakeQuiz } from "../features/quiz/quizSlice";
 import { Button } from ".";
 import { toast } from "react-toastify";
 
-type PersonalityPoints = {
-  introvert: number;
-  extrovert: number;
-};
 const End = () => {
   const dispatch = useAppDispatch();
 
-  const {
-    data: answers,
-    refetch,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetAllAnswersQuery();
+  const { data, isLoading, isSuccess, isError, error } =
+    useGetAllAnswersQuery();
 
-  const [points, setPoints] = useState<PersonalityPoints>({
-    introvert: 0,
-    extrovert: 0,
-  });
   const [showAns, setShowAns] = useState<boolean>(false);
 
   useEffect(() => {
     if (isLoading) {
       toast.loading("Loading...");
-    } else if (isSuccess) {
-      let introvertPoints = 0;
-      let extrovertPoints = 0;
-
-      // check if should refetch the data
-      if (answers != null && answers.length > 0) {
-        // check answers for personality type
-        answers.forEach((result, index) => {
-          if (result.personality === "introvert") {
-            introvertPoints++;
-          } else {
-            extrovertPoints++;
-          }
-        });
-
-        // save personality types to state
-        setPoints({
-          ...points,
-          ["introvert"]: introvertPoints,
-          ["extrovert"]: extrovertPoints,
-        });
-      } else {
-        refetch();
-      }
     } else if (isError) {
       toast.error(error);
     }
@@ -61,7 +23,7 @@ const End = () => {
     return () => {
       toast.dismiss();
     };
-  }, [isLoading, isSuccess, isError, error, answers]);
+  }, [isLoading, isSuccess, isError, error]);
 
   // retake quiz
   const handleRetake = () => {
@@ -70,7 +32,7 @@ const End = () => {
 
   return (
     <div className="flex flex-col justify-center items-center w-full max-sm:w-full rounded-md bg-[#f5f7f9] px-5 md:px-10 pt-10 pb-8 max-container mb-20">
-      {points.introvert > points.extrovert ? (
+      {data?.personality === "introvert" && (
         <section className="flex flex-col justify-center items-center w-full">
           <h3 className="font-montserrat text-lg md:text-2xl font-semibold italic ">
             Your Result
@@ -117,7 +79,9 @@ const End = () => {
             because you respect yourself.
           </p>
         </section>
-      ) : (
+      )}
+
+      {data?.personality === "extrovert" && (
         <section className="flex flex-col justify-center items-center w-full">
           <h3 className="font-montserrat text-lg md:text-2xl font-semibold italic ">
             Your Result
@@ -158,17 +122,19 @@ const End = () => {
           </h3>
 
           <div className="mt-3 break-words font-montserrat text-base md:text-xl leading-normal text-slate-gray flex flex-col items-start justify-start ">
-            {answers.map((result, i) => (
-              <div key={i}>
-                <h3 className="mt-2 font-palanquin text-lg md:text-2xl leading-normal font-bold mb-3 md:mb-4 ">
-                  {i + 1}. {result.question}
-                </h3>
+            {[...data?.answers]
+              .sort((a, b) => a._id - b._id)
+              .map((result) => (
+                <div key={result._id}>
+                  <h3 className="mt-2 font-palanquin text-lg md:text-2xl leading-normal font-bold mb-3 md:mb-4 ">
+                    {result._id}. {result.question}
+                  </h3>
 
-                <p className="border-slate-400 font-normal  rounded-md bg-white mb-4 md:mb-8 p-3 md:p-5 border">
-                  {result.answer}
-                </p>
-              </div>
-            ))}
+                  <p className="border-slate-400 font-normal  rounded-md bg-white mb-4 md:mb-8 p-3 md:p-5 border">
+                    {result.answer}
+                  </p>
+                </div>
+              ))}
           </div>
         </section>
       )}

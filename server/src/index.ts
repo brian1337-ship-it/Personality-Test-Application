@@ -25,16 +25,6 @@ const gracefulShutdown = (signal: string) => {
     logger.info("Got signal", signal);
 
     // disconnect from the db
-    // await disconnectFromDatabase();
-
-    // stop server
-    // server.close();
-
-    // logger.info("Shutting down...");
-
-    // process.exit(0);
-
-    // disconnect from the db
     disconnectFromDatabase().then(() => {
       server.close();
       logger.info("Shutting down...");

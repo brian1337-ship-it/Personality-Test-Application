@@ -88,9 +88,40 @@ export async function findAllHandler(_: Request, res: Response) {
 // @route   GET /api/quiz/answers
 // @access  Public
 export async function findAllAnswersHandler(_: Request, res: Response) {
-  const answers = await findAllAnswers();
+  const ans = await findAllAnswers();
 
-  return res.status(StatusCodes.OK).send(answers);
+  let introvertPoints: number = 0;
+  let extrovertPoints: number = 0;
+  let personalityType: string | null = null;
+
+  // Determine personality type
+  const calcPersonality = async () => {
+    if (ans != null && ans.length > 0) {
+      // check answers for personality type
+      ans.forEach((result, index) => {
+        if (result.personality === "introvert") {
+          introvertPoints++;
+        } else {
+          extrovertPoints++;
+        }
+      });
+    }
+  };
+
+  const definePersonality = async () => {
+    if (introvertPoints > extrovertPoints) {
+      personalityType = "introvert";
+    } else {
+      personalityType = "extrovert";
+    }
+  };
+
+  await calcPersonality();
+  await definePersonality();
+
+  return res
+    .status(StatusCodes.OK)
+    .send({ answers: ans, personality: personalityType });
 }
 
 // @desc    Save answers
