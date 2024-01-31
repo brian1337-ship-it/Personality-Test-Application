@@ -1,4 +1,4 @@
-import { useDeleteAllAnswersMutation } from "../features/api/apiSlice";
+import { useDeleteAllAnswersMutation } from "../features/api/quizApiSlice";
 import landingPageImg from "/landingpage.jpg";
 import { Button } from ".";
 import { useAppDispatch } from "../customHooks/reduxHooks";

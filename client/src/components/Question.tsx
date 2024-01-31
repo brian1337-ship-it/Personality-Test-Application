@@ -1,7 +1,7 @@
 import {
   useGetQuizDataQuery,
   useSubmitAnswersMutation,
-} from "../features/api/apiSlice";
+} from "../features/api/quizApiSlice";
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 // import quizData from "../data/quiz.json";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxHooks";
@@ -32,24 +32,6 @@ const Question = () => {
   const [data, setData] = useState<IQuizData | null>(null);
   const [selected, setSelected] = useState<IAnswers | null>(null);
 
-  // useEffect(() => {
-  // initialize data
-  // setData(quizData[activeQuestion]);
-  // to show selected answers when PREVIUOS is selected
-  // if (isSuccess) {
-  //   // initialize data
-  //   setData(quizData[activeQuestion]);
-  //   console.log("The later data:", quizData);
-  // }
-  // if (answers[activeQuestion] != undefined) {
-  //   setSelected({
-  //     ...selected,
-  //     ["answer"]: answers[activeQuestion].answer,
-  //     ["personality"]: answers[activeQuestion].personality,
-  //   });
-  // }
-  // }, [activeQuestion]);
-
   useEffect(() => {
     // show selected answers when PREVIOUS is selected
     if (answers[activeQuestion] != undefined) {
@@ -65,8 +47,6 @@ const Question = () => {
     } else if (isSuccess) {
       // initialize data
       setData(quizData[activeQuestion]);
-      // deleteAllAnswers();
-      // console.log("The data:", quizData);
     } else if (isError) {
       toast.error(error);
     }
@@ -74,16 +54,7 @@ const Question = () => {
     return () => {
       toast.dismiss();
     };
-  }, [
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-    quizData,
-    activeQuestion,
-    answers,
-    selected,
-  ]);
+  }, [isLoading, isSuccess, isError, error, quizData, activeQuestion]);
 
   // select answer
   const changeOptionHandler = (
@@ -99,7 +70,6 @@ const Question = () => {
 
   // Previous question
   const handlePrevious = () => {
-    // setError("");
     dispatch(previousQuestion());
   };
 
@@ -113,13 +83,14 @@ const Question = () => {
     // add answer
     let ans = [...answers];
     ans[activeQuestion] = {
+      _id: data._id,
       question: data.question,
       answer: selected.answer,
       personality: selected.personality,
     };
-    // console.log("Active Question", activeQuestion);
-    // console.log("RUn once", ans);
+
     dispatch(nextQuestion(ans));
+
     setSelected(null);
 
     // unselect option
@@ -140,7 +111,8 @@ const Question = () => {
     // add last answer
     let ans = [...answers];
     ans[activeQuestion] = {
-      question: data?.question,
+      _id: data._id,
+      question: data.question,
       answer: selected.answer,
       personality: selected.personality,
     };

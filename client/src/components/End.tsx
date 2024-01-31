@@ -1,4 +1,4 @@
-import { useGetAllAnswersQuery } from "../features/api/apiSlice";
+import { useGetAllAnswersQuery } from "../features/api/quizApiSlice";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../customHooks/reduxHooks";
 import { retakeQuiz } from "../features/quiz/quizSlice";
@@ -65,7 +65,6 @@ const End = () => {
 
   // retake quiz
   const handleRetake = () => {
-    // resets store
     dispatch(retakeQuiz());
   };
 

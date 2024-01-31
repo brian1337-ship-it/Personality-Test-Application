@@ -2,6 +2,9 @@ import { getModelForClass, prop, pre } from "@typegoose/typegoose";
 
 // the quiz interface
 export class Quiz {
+  @prop({ unique: true })
+  public _id: number;
+
   @prop({ required: true })
   public question: string;
 

@@ -9,6 +9,7 @@ import { saveAnswers, findAllAnswers, deleteAnswers } from "./quiz.service";
 export async function findAllHandler(_: Request, res: Response) {
   return res.status(StatusCodes.OK).json([
     {
+      _id: 1,
       question: "This morning, your agenda seems to be free. You:",
       choices: [
         {
@@ -34,6 +35,7 @@ export async function findAllHandler(_: Request, res: Response) {
       ],
     },
     {
+      _id: 2,
       question:
         "You’re having an animated discussion with a colleague regarding a project that you’re in charge of. You:",
       choices: [
@@ -56,6 +58,7 @@ export async function findAllHandler(_: Request, res: Response) {
       ],
     },
     {
+      _id: 3,
       question: "You are taking part in a guided tour of a museum. You:",
       choices: [
         {
