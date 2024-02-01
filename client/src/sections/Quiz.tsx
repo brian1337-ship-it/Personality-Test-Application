@@ -10,7 +10,6 @@ const Quiz = () => {
       {step === 1 && <Start />}
       {step === 2 && <Question />}
       {step === 3 && <End />}
-      {/* <End /> */}
     </section>
   );
 };

@@ -35,8 +35,6 @@ export const quizSlice = createSlice({
       state.activeQuestion = state.activeQuestion - 1;
     },
     submitQuiz: (state) => {
-      // state.answers = action.payload;
-
       state.step = 3;
     },
     retakeQuiz: (state) => {
@@ -47,7 +45,7 @@ export const quizSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
+// Action creators generated for each case reducer function
 export const {
   nextQuestion,
   previousQuestion,

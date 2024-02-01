@@ -3,9 +3,7 @@ import { object, string, TypeOf, array, number } from "zod";
 export const saveAnswersSchema = {
   body: array(
     object({
-      _id: number({
-        required_error: "Question ID is required",
-      }),
+      _id: number(),
       question: string({
         required_error: "Question is required",
       }),

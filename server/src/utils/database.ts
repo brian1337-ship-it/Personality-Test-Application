@@ -23,9 +23,6 @@ export async function connectToDatabase() {
 
 //  disconnect
 export async function disconnectFromDatabase() {
-  // close db connection
-  // await mongoose.disconnect();
-
   // stop mongo server
   await mongoServer.stop();
 

@@ -2,7 +2,7 @@ import { getModelForClass, prop, pre } from "@typegoose/typegoose";
 
 // the quiz interface
 export class Quiz {
-  @prop({ unique: true })
+  @prop()
   public _id: number;
 
   @prop({ required: true })
