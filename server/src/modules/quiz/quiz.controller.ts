@@ -94,7 +94,7 @@ export async function findAllAnswersHandler(_: Request, res: Response) {
   let extrovertPoints: number = 0;
   let personalityType: string | null = null;
 
-  // Determine personality type
+  // calculate personality score
   const calcPersonality = async () => {
     if (ans != null && ans.length > 0) {
       // check answers for personality type
