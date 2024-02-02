@@ -81,6 +81,54 @@ export async function findAllHandler(_: Request, res: Response) {
         },
       ],
     },
+    {
+      _id: 4,
+      question:
+        "You’re out with a group of friends and there’s a person who’s quite shy and doesn’t talk much. You:",
+      choices: [
+        {
+          option:
+            "A. Notice that they’re alone, but don’t go over to talk with them",
+          personality: "introvert",
+        },
+        {
+          option: "B. Go and have a chat with them",
+          personality: "extrovert",
+        },
+        {
+          option: "C. Shoot some friendly smiles in their direction",
+          personality: "extrovert",
+        },
+        {
+          option: "D. Hardly notice them at all",
+          personality: "introvert",
+        },
+      ],
+    },
+    {
+      _id: 5,
+      question:
+        "You’ve seen a movie with your family and the reviews are mixed. You:",
+      choices: [
+        {
+          option: "A. Don’t share your point of view with anyone",
+          personality: "introvert",
+        },
+        {
+          option:
+            "B. Didn’t like the film, but keep your views to yourself when asked",
+          personality: "introvert",
+        },
+        {
+          option: "C. State your point of view with enthusiasm",
+          personality: "extrovert",
+        },
+        {
+          option: "D. Try to bring the others round to your point of view",
+          personality: "extrovert",
+        },
+      ],
+    },
   ]);
 }
 

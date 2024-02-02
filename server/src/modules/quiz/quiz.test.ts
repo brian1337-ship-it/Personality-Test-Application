@@ -18,7 +18,7 @@ describe("GET /api/quiz", () => {
       .expect(200)
       .then((response) => {
         expect(response.body).toHaveProperty("length");
-        expect(response.body.length).toBe(3);
+        expect(response.body.length).toBe(5);
       }));
 });
 
