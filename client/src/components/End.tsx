@@ -43,40 +43,14 @@ const End = () => {
 
           <p className="font-montserrat mb-3 break-words text-base md:text-xl leading-normal">
             You believe that living alone is the key to happiness, and you want
-            to blend in with the crowd rather than stick out. You are constantly
-            tormented by the thought of doing things incorrectly, not
-            understanding, or not being alert or intelligent enough to do what
-            people expect of you. You lack self-confidence and seem to believe
-            that others are superior to you. In a conversation, for example, you
-            are more inclined to agree with the other person's points of view
-            since you do not completely respect your own beliefs. You volunteer
-            for low-level tasks or services.When people want to get out of a
-            task, they naturally come to you as they know that you never say
-            ‘no’.
-          </p>
-          <p className="font-montserrat break-words text-base md:text-xl leading-normal">
-            It's understandable that you sometimes feel used, but you don't know
-            how to escape the cycle. On the few occasions when you've attempted
-            to do so, your uncommon disobedience has sparked commotion, and
-            you've had to back down. You are hesitant to interact with others
+            to blend in with the crowd rather than stick out. You lack
+            self-confidence and seem to believe that others are superior to you.
+            In a conversation, for example, you are more inclined to agree with
+            the other person's points of view since you do not completely
+            respect your own beliefs. You are hesitant to interact with others
             because you believe they are continuously criticising you and will
             inevitably discover your flaws. So you attempt to be as honest and
-            discreet as possible. How far will you go with this philosophy of
-            self-denigration? Avoid projecting your negative self-image onto
-            others.
-          </p>
-
-          <p className="font-montserrat break-words text-base md:text-xl leading-normal">
-            Take a close look around you and you will notice that they, too,
-            have flaws, limitations, and failings, so quit making excuses for
-            everything. Perhaps you were raised in an environment of 'You'll
-            never make the grade' as a child, which is a poison that you must
-            gradually eliminate from your system. Learn to prioritise your own
-            interests—everyone else does, so why not you? You, too, have
-            desires, dreams, and opinions—express them. If you believe that
-            saying no or thinking differently than others will cause you to lose
-            love, this is just not true. Others will come to appreciate you
-            because you respect yourself.
+            discreet as possible.
           </p>
         </section>
       )}
@@ -95,8 +69,8 @@ const End = () => {
             moving. You take the initiative, motivate people, despise waiting,
             and are constantly anticipating what is going on around you. You
             enjoy managing everything, much like a conductor of an orchestra.
-            You appreciate being seen by your coworkers, and your worry stems
-            more from the prospect of leaving others uninterested.
+            You appreciate being seen by others, and your worry stems more from
+            the prospect of leaving them uninterested.
           </p>
         </section>
       )}
