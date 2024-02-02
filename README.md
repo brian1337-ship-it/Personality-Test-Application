@@ -4,7 +4,7 @@ This is a full-stack personality test application, that takes 3-5 different ques
 
 It includes the following:
 
-- Backend REST API with Express & MongoDB
+- Backend REST API with Express & MongoDB Memory Server
 - Routes to save, read and delete quiz data
 - Custom logger
 - Middleware to set and hide some headers for security purposes.
