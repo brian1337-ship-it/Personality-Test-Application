@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { SaveAnswersBody } from "./quiz.schema";
 import { saveAnswers, findAllAnswers, deleteAnswers } from "./quiz.service";
 
-// @desc    Find all quiz data
+// @desc    Fetch all quiz multiple-choice questions
 // @route   GET /api/quiz
 // @access  Public
 export async function findAllHandler(_: Request, res: Response) {
@@ -132,7 +132,7 @@ export async function findAllHandler(_: Request, res: Response) {
   ]);
 }
 
-// @desc    Find all answers
+// @desc    Fetch all selected answers
 // @route   GET /api/quiz/answers
 // @access  Public
 export async function findAllAnswersHandler(_: Request, res: Response) {
@@ -196,7 +196,6 @@ export async function deleteAnswersHandler(_: Request, res: Response) {
   try {
     const ans = await deleteAnswers();
 
-    // return res.status(StatusCodes.NO_CONTENT);
     return res.status(StatusCodes.OK).send(ans);
   } catch (e: any) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message);

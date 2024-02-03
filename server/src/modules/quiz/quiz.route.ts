@@ -10,10 +10,10 @@ import { saveAnswersSchema } from "./quiz.schema";
 
 const router = express.Router();
 
-// Find all quiz data
+// Fetch all quiz multiple-choice questions
 router.get("/", findAllHandler);
 
-// Find all answers
+// Fetch all answers
 router.get("/answers", findAllAnswersHandler);
 
 // Save Answers
@@ -23,7 +23,7 @@ router.post(
   saveAnswersHandler
 );
 
-// Update Answer
+// Update Answers
 router.delete("/answers", deleteAnswersHandler);
 
 export default router;
